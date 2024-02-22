@@ -1,4 +1,5 @@
-import MapComponent from "./Map"
+import Admin from "./Components/Admin"
+import MainPage from "./Components/MainPage"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
 function App() {
 
@@ -6,7 +7,8 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MapComponent />} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<div>NOT FOUND</div>} />
         </Routes>
 
