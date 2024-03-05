@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: boolean, createArea: (area: any) => void, marker?: number[], setMarker: (...args: any) => void }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<Map | null>(null);
+  const map = useRef<Map | any>(null);
   const [lng, setLng] = useState(-70.9);
   const [lat, setLat] = useState(42.35);
   const [zoom, setZoom] = useState(9);
@@ -44,7 +44,7 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
       if (!markable) return
       new mapboxgl.Marker()
         .setLngLat(e.lngLat)
-        .addTo(map!.current);
+        .addTo(map.current);
 
       setMarker(lon, lat)
     });
