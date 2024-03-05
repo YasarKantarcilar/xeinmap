@@ -52,7 +52,7 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
     map.current.on('draw.create', updateArea)
     function updateArea() {
       const data = Draw.getAll();
-      createArea(data.features[0].geometry.coordinates)
+      createArea(data.features[0].geometry!.coordinates!)
     }
 
     //const fetchedData = [[-71.10118713378904, 42.589570595259346],
