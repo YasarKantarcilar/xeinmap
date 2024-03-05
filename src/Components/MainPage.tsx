@@ -6,6 +6,7 @@ const MainPage = () => {
   const [area, setArea] = useState<number[][]>()
   const [marker, setMarker] = useState<number[]>()
   const [markable, setMarkable] = useState<boolean>(false)
+  const [modalPage, setModalPage] = useState<number>(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
   function createArea(area: number[][]) {
     console.log("createArea called with: ")
@@ -19,7 +20,7 @@ const MainPage = () => {
   console.log("marker main", marker)
   return (
     <div>
-      {isModalOpen && !markable && <CollectDataModal />}
+      {isModalOpen && !markable && <CollectDataModal modalPage={modalPage} setModalPage={setModalPage} />}
       <MapComponent createArea={createArea} markable={markable} marker={marker} setMarker={handleSelectMarker} />
     </div>
   )

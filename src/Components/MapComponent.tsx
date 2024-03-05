@@ -4,7 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: boolean, createArea: (area: any) => void, marker?: number[], setMarker: (...args) => void }) => {
+const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: boolean, createArea: (area: any) => void, marker?: number[], setMarker: (...args: any) => void }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map | null>(null);
   const [lng, setLng] = useState(-70.9);
@@ -13,6 +13,9 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
   console.log(lat, lng, zoom)
   mapboxgl.accessToken = "pk.eyJ1IjoibXltb29uIiwiYSI6ImNsc3B5ZDNnNTAzb3gybnFrZXZkaWd2b2EifQ.PU9pxWmKif3n3VFQ9TOoFg";
   useEffect(() => {
+    setLng(-70.9)
+    setLat(42.35)
+    setZoom(9)
 
     if (map.current) return;
     // initialize map only once
@@ -34,7 +37,7 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
       defaultMode: 'draw_polygon'
     });
     if (!map.current) return
-    map.current.on('click', function(e) {
+    map.current.on('click', function(e: any) {
       // e.lngLat contains the longitude and latitude of the clicked point
       var lat = e.lngLat.lat;
       var lon = e.lngLat.lng;
