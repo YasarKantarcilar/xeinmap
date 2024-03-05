@@ -1,28 +1,36 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import MapComponent from "./MapComponent"
 import CollectDataModal from "./CollectDataModal"
 
 const MainPage = () => {
   const [area, setArea] = useState<number[][]>()
-  const [marker, setMarker] = useState<number[]>()
-  const [markable, setMarkable] = useState<boolean>(false)
   const [modalPage, setModalPage] = useState<number>(0)
+  const [marker, setMarker] = useState<number[]>()
+  const [isSelectingPanel, setIsSelectingPanel] = useState<boolean>(false)
+  const [markable, setMarkable] = useState<boolean>(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  function createArea(area: number[][]) {
-    console.log("createArea called with: ")
-    setArea(area)
+  function createArea(areaParam: number[][]) {
+    console.log("createArea called with: ", areaParam)
+    setArea(areaParam)
     setIsModalOpen(true)
   }
-  console.log(area)
-  const handleSelectMarker = (...args: any) => {
+  console.log(area, "area")
+  console.log(marker, "marker")
+  const handleSelectMarker = useCallback((...args: any) => {
+    console.log("test,area", area)
+    if (!area) return
     setMarker([...args])
-    setMarkable(false)
-  }
-  console.log("marker main", marker)
+    setModalPage(3)
+    setIsSelectingPanel(false)
+    setIsModalOpen(true)
+
+
+  }, [markable, area, isSelectingPanel, isModalOpen])
+  console.log("marker main", isSelectingPanel)
   return (
     <div>
-      {isModalOpen && !markable && <CollectDataModal modalPage={modalPage} setModalPage={setModalPage} />}
-      <MapComponent createArea={createArea} markable={markable} marker={marker} setMarker={handleSelectMarker} />
+      {isModalOpen && <CollectDataModal setIsModalOpen={setIsModalOpen} setIsSelectingPanel={setIsSelectingPanel} modalPage={modalPage} setModalPage={setModalPage} setMarkable={setMarkable} />}
+      <MapComponent createArea={createArea} area={area} markable={markable} marker={marker} setMarker={handleSelectMarker} />
     </div>
   )
 }

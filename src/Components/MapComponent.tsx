@@ -1,10 +1,10 @@
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: boolean, createArea: (area: any) => void, marker?: number[], setMarker: (...args: any) => void }) => {
+const MapComponent = ({ area, markable, createArea, marker, setMarker }: { area: any, markable: boolean, createArea: (area: any) => void, marker?: number[], setMarker: (...args: any) => void }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map | any>(null);
   const [lng, setLng] = useState(-70.9);
@@ -37,19 +37,10 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
       defaultMode: 'draw_polygon'
     });
     if (!map.current) return
-    map.current.on('click', function(e: any) {
-      // e.lngLat contains the longitude and latitude of the clicked point
-      var lat = e.lngLat.lat;
-      var lon = e.lngLat.lng;
-      if (!markable) return
-      new mapboxgl.Marker()
-        .setLngLat(e.lngLat)
-        .addTo(map.current);
-
-      setMarker(lon, lat)
-    });
+    map.current.on('click', mapMarkClick);
     map.current.addControl(Draw, "top-left");
     map.current.on('draw.create', updateArea)
+
     function updateArea() {
       const data: any = Draw.getAll();
       createArea(data.features[0].geometry.coordinates[0])
@@ -81,8 +72,17 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
     // Now you can add the reshaped polygon to the map using MapboxDraw
     // Assuming `draw` is your MapboxDraw instance
     //Draw.add(geoJSONPolygon);
-  }, [marker]);
+  }, [marker, markable]);
+  const mapMarkClick = useCallback(function(e: any) {
+    // e.lngLat contains the longitude and latitude of the clicked point
+    var lat = e.lngLat.lat;
+    var lon = e.lngLat.lng;
+    new mapboxgl.Marker()
+      .setLngLat(e.lngLat)
+      .addTo(map.current);
 
+    setMarker(lon, lat)
+  }, [marker, markable, area])
   return (
     <>
       <Link to={"/admin"} className="fixed top-5 right-5 px-8 py-4 rounded z-50 bg-white border-2">Admin</Link>
