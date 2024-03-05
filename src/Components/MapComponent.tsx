@@ -44,7 +44,7 @@ const MapComponent = ({ markable, createArea, marker, setMarker }: { markable: b
       if (!markable) return
       new mapboxgl.Marker()
         .setLngLat(e.lngLat)
-        .addTo(map.current);
+        .addTo(map!.current);
 
       setMarker(lon, lat)
     });
