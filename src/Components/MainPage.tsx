@@ -13,7 +13,8 @@ const MainPage = () => {
     setArea(area)
     setIsModalOpen(true)
   }
-  const handleSelectMarker = (...args) => {
+  console.log(area)
+  const handleSelectMarker = (...args: any) => {
     setMarker([...args])
     setMarkable(false)
   }
